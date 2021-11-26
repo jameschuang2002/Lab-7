@@ -1,12 +1,12 @@
-// module vDFF(clk, in, out);
-//     parameter n;
-//     input[n-1:0] in;
-//     input clk;
-//     output reg[n-1:0] out;
-//     always @(posedge clk) begin
-//         out = in;
-//     end
-// endmodule
+module vDFF(clk,D,Q);
+  parameter n=1;
+  input clk;
+  input [n-1:0] D;
+  output [n-1:0] Q;
+  reg [n-1:0] Q;
+  always @(posedge clk)
+    Q <= D;
+endmodule
 
 module FSMCtrl (s, clk, reset, opcode, op, w, nsel, vsel, asel, bsel, loada, loadb, loadc, write, loads, ALUop);
     input s, reset, clk;
