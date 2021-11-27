@@ -8,11 +8,11 @@ module vDFF(clk,D,Q);
     Q <= D;
 endmodule
 
-module FSMCtrl (s, clk, reset, opcode, op, w, nsel, vsel, asel, bsel, loada, loadb, loadc, write, loads, ALUop, reset_pc, load_pc, addr_sel, mem_cmd, load_ir);
-    input s, reset, clk;
+module FSMCtrl (clk, reset, opcode, op, nsel, vsel, asel, bsel, loada, loadb, loadc, write, loads, ALUop, reset_pc, load_pc, addr_sel, mem_cmd, load_ir);
+    input reset, clk;
     input[2:0] opcode;
     input[1:0] op;
-    output reg w, asel, bsel, loada, loadb, loadc, write, loads, reset_pc, load_pc, addr_sel, load_ir;
+    output reg asel, bsel, loada, loadb, loadc, write, loads, reset_pc, load_pc, addr_sel, load_ir;
     output reg[2:0] nsel, mem_cmd;
     output reg[3:0] vsel;
     output reg[1:0] ALUop;
@@ -92,7 +92,6 @@ module FSMCtrl (s, clk, reset, opcode, op, w, nsel, vsel, asel, bsel, loada, loa
         case(next_state_reset)
         /* initialization */
             `RST: begin
-                        w = 1'b1;
                         loada = 1'b0;
                         loadb = 1'b0;
                         loadc = 1'b0;
@@ -111,7 +110,6 @@ module FSMCtrl (s, clk, reset, opcode, op, w, nsel, vsel, asel, bsel, loada, loa
                         ALUop = 2'b00;
                     end
             `IF1:   begin
-                        w = 1'b1;
                         loada = 1'b0;
                         loadb = 1'b0;
                         loadc = 1'b0;
@@ -130,7 +128,6 @@ module FSMCtrl (s, clk, reset, opcode, op, w, nsel, vsel, asel, bsel, loada, loa
                         ALUop = 2'b00;
                     end
             `IF2: begin
-                        w = 1'b1;
                         loada = 1'b0;
                         loadb = 1'b0;
                         loadc = 1'b0;
@@ -149,7 +146,6 @@ module FSMCtrl (s, clk, reset, opcode, op, w, nsel, vsel, asel, bsel, loada, loa
                         ALUop = 2'b00;
                     end
             `UPDATEPC:  begin
-                            w = 1'b1;
                             loada = 1'b0;
                             loadb = 1'b0;
                             loadc = 1'b0;
@@ -168,7 +164,6 @@ module FSMCtrl (s, clk, reset, opcode, op, w, nsel, vsel, asel, bsel, loada, loa
                             ALUop = 2'b00;
                         end
             `DEC:   begin
-                        w = 1'b0;
                         loada = 1'b0;
                         loadb = 1'b0;
                         loadc = 1'b0;
@@ -188,7 +183,6 @@ module FSMCtrl (s, clk, reset, opcode, op, w, nsel, vsel, asel, bsel, loada, loa
         /* loading data */
             `GETA:  begin
                 /* load data to a if operation is ALU */
-                        w = 1'b0;
                         loada = 1'b1; 
                         loadb = 1'b0;
                         loadc = 1'b0;
@@ -206,7 +200,6 @@ module FSMCtrl (s, clk, reset, opcode, op, w, nsel, vsel, asel, bsel, loada, loa
                         vsel = 4'b0001;
                     end
             `GETB:  begin
-                        w = 1'b0;
                         loada = 1'b0;
                         loadb = 1'b1;
                         loadc = 1'b0;
@@ -224,7 +217,6 @@ module FSMCtrl (s, clk, reset, opcode, op, w, nsel, vsel, asel, bsel, loada, loa
                         vsel = 4'b0001;
                     end
             `MGETA: begin
-                        w = 1'b0;
                         loada = 1'b0;
                         loadb = 1'b0;
                         loadc = 1'b0;
@@ -242,7 +234,6 @@ module FSMCtrl (s, clk, reset, opcode, op, w, nsel, vsel, asel, bsel, loada, loa
                         vsel = 4'b0001;
                     end
             `MGETB: begin
-                        w = 1'b0;
                         loada = 1'b0; 
                         loadb = 1'b1;
                         loadc = 1'b0; 
@@ -261,7 +252,6 @@ module FSMCtrl (s, clk, reset, opcode, op, w, nsel, vsel, asel, bsel, loada, loa
                     end
         /* compute and display */
             `MSHOW: begin
-                        w = 1'b0;
                         loada = 1'b0; 
                         loadb = 1'b0;
                         loadc = 1'b1; 
@@ -280,7 +270,6 @@ module FSMCtrl (s, clk, reset, opcode, op, w, nsel, vsel, asel, bsel, loada, loa
                         nsel = 3'b001;
                     end
             `ADD:   begin
-                        w = 1'b0;
                         loada = 1'b0;
                         loadb = 1'b0;
                         loadc = 1'b1;
@@ -299,7 +288,6 @@ module FSMCtrl (s, clk, reset, opcode, op, w, nsel, vsel, asel, bsel, loada, loa
                         nsel = 3'b001;
                     end
             `MVN:   begin
-                        w = 1'b0;
                         loada = 1'b0;
                         loadb = 1'b0;
                         loadc = 1'b1;
@@ -318,7 +306,6 @@ module FSMCtrl (s, clk, reset, opcode, op, w, nsel, vsel, asel, bsel, loada, loa
                         nsel = 3'b001;
                     end
             `AND: begin
-                        w = 1'b0;
                         loada = 1'b0;
                         loadb = 1'b0;
                         loadc = 1'b1;
@@ -337,7 +324,6 @@ module FSMCtrl (s, clk, reset, opcode, op, w, nsel, vsel, asel, bsel, loada, loa
                         nsel = 3'b001;
                     end
             `CMP: begin
-                        w = 1'b0;
                         loada = 1'b0;
                         loadb = 1'b0;
                         loadc = 1'b1;
@@ -357,7 +343,6 @@ module FSMCtrl (s, clk, reset, opcode, op, w, nsel, vsel, asel, bsel, loada, loa
                     end
         /* writing */
             `WRITE: begin 
-                        w = 1'b0;
                         loada = 1'b0;
                         loadb = 1'b0;
                         loadc = 1'b0;
