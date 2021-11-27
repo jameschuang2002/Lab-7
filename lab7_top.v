@@ -37,9 +37,10 @@ module lab7_top(KEY,SW,LEDR,HEX0,HEX1,HEX2,HEX3,HEX4,HEX5);
     output [9:0] LEDR;
     output [6:0] HEX0, HEX1, HEX2, HEX3, HEX4, HEX5;
     wire[7:0] read_address, write_address;
-    wire[8:0] mem_addr
+    wire[8:0] mem_addr;
     wire[15:0] din, dout, read_data, out;
-    wire write = 1'b0, enable;
+    wire write, enable;
+    assign write = 1'b0;
     wire Z, N, V;
     wire[2:0] mem_cmd;
     cpu CPU (
