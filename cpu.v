@@ -1,5 +1,5 @@
 module cpu(clk, reset, in, out, N, V, Z, mem_cmd, mem_addr);
-    input clk, reset, s;
+    input clk, reset;
     input[15:0] in;
     output[15:0] out;
     output N, V, Z;
