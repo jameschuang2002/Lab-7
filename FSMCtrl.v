@@ -35,11 +35,6 @@ module FSMCtrl (clk, reset, opcode, op, nsel, vsel, asel, bsel, loada, loadb, lo
     `define IF2 4'b1110
     `define UPDATEPC 4'b1111
 
-    /* Memory Commands */
-    `define MEMNONE 3'b001;
-    `define MEMREAD 3'b010;
-    `define MEMWRITE 3'b100;
-
     wire[3:0] next_state_reset, current_state;
     reg[3:0] next_state;
 
@@ -100,7 +95,7 @@ module FSMCtrl (clk, reset, opcode, op, nsel, vsel, asel, bsel, loada, loadb, lo
                         reset_pc = 1'b1;
                         load_pc = 1'b1;
                         addr_sel = 1'b0;
-                        mem_cmd = `MEMNONE;
+                        mem_cmd = 3'b001;
                         load_ir = 1'b0;
                         /* unrelated signals, declared to prevent latches */
                         asel = 1'b0; 
@@ -118,7 +113,7 @@ module FSMCtrl (clk, reset, opcode, op, nsel, vsel, asel, bsel, loada, loadb, lo
                         reset_pc = 1'b0;
                         load_pc = 1'b0;
                         addr_sel = 1'b1;
-                        mem_cmd = `MEMREAD;
+                        mem_cmd = 3'b010;
                         load_ir = 1'b0;
                         /* unrelated signals, declared to prevent latches */
                         asel = 1'b0; 
@@ -136,7 +131,7 @@ module FSMCtrl (clk, reset, opcode, op, nsel, vsel, asel, bsel, loada, loadb, lo
                         reset_pc = 1'b0;
                         load_pc = 1'b0;
                         addr_sel = 1'b1;
-                        mem_cmd = `MEMREAD;
+                        mem_cmd = 3'b010;
                         load_ir = 1'b1;
                         /* unrelated signals, declared to prevent latches */
                         asel = 1'b0; 
@@ -154,7 +149,7 @@ module FSMCtrl (clk, reset, opcode, op, nsel, vsel, asel, bsel, loada, loadb, lo
                             reset_pc = 1'b0;
                             load_pc = 1'b1;
                             addr_sel = 1'b0;
-                            mem_cmd = `MEMNONE;
+                            mem_cmd = 3'b001;
                             load_ir = 1'b0;
                             /* unrelated signals, declared to prevent latches */
                             asel = 1'b0; 
@@ -172,7 +167,7 @@ module FSMCtrl (clk, reset, opcode, op, nsel, vsel, asel, bsel, loada, loadb, lo
                         reset_pc = 1'b0;
                         load_pc = 1'b0;
                         addr_sel = 1'b0;
-                        mem_cmd = `MEMNONE;
+                        mem_cmd = 3'b001;
                         load_ir = 1'b0;
                         asel = 1'b0; 
                         bsel = 1'b0;
@@ -192,7 +187,7 @@ module FSMCtrl (clk, reset, opcode, op, nsel, vsel, asel, bsel, loada, loadb, lo
                         reset_pc = 1'b0;
                         load_pc = 1'b0;
                         addr_sel = 1'b0;
-                        mem_cmd = `MEMNONE;
+                        mem_cmd = 3'b001;
                         load_ir = 1'b0;
                         /* unrelated signals */
                         asel = 1'b0;
@@ -209,7 +204,7 @@ module FSMCtrl (clk, reset, opcode, op, nsel, vsel, asel, bsel, loada, loadb, lo
                         reset_pc = 1'b0;
                         load_pc = 1'b0;
                         addr_sel = 1'b0;
-                        mem_cmd = `MEMNONE;
+                        mem_cmd = 3'b001;
                         load_ir = 1'b0;
                         /* unrelated signals */
                         asel = 1'b0;
@@ -225,7 +220,7 @@ module FSMCtrl (clk, reset, opcode, op, nsel, vsel, asel, bsel, loada, loadb, lo
                         reset_pc = 1'b0;
                         load_pc = 1'b0;
                         addr_sel = 1'b0;
-                        mem_cmd = `MEMNONE;
+                        mem_cmd = 3'b001;
                         load_ir = 1'b0;
                         /* unrelated signals */
                         asel = 1'b0;
@@ -243,7 +238,7 @@ module FSMCtrl (clk, reset, opcode, op, nsel, vsel, asel, bsel, loada, loadb, lo
                         reset_pc = 1'b0;
                         load_pc = 1'b0;
                         addr_sel = 1'b0;
-                        mem_cmd = `MEMNONE;
+                        mem_cmd = 3'b001;
                         load_ir = 1'b0;
                         /* unrelated signals */
                         asel = 1'b0;
@@ -263,7 +258,7 @@ module FSMCtrl (clk, reset, opcode, op, nsel, vsel, asel, bsel, loada, loadb, lo
                         reset_pc = 1'b0;
                         load_pc = 1'b0;
                         addr_sel = 1'b0;
-                        mem_cmd = `MEMNONE;
+                        mem_cmd = 3'b001;
                         load_ir = 1'b0;
                         /* unrelated signals */
                         vsel = 4'b0001;
@@ -281,7 +276,7 @@ module FSMCtrl (clk, reset, opcode, op, nsel, vsel, asel, bsel, loada, loadb, lo
                         reset_pc = 1'b0;
                         load_pc = 1'b0;
                         addr_sel = 1'b0;
-                        mem_cmd = `MEMNONE;
+                        mem_cmd = 3'b001;
                         load_ir = 1'b0;
                         /* unrelated signals */
                         vsel = 4'b0001;
@@ -299,7 +294,7 @@ module FSMCtrl (clk, reset, opcode, op, nsel, vsel, asel, bsel, loada, loadb, lo
                         reset_pc = 1'b0;
                         load_pc = 1'b0;
                         addr_sel = 1'b0;
-                        mem_cmd = `MEMNONE;
+                        mem_cmd = 3'b001;
                         load_ir = 1'b0;
                         /* unrelated signals */
                         vsel = 4'b0001;
@@ -317,7 +312,7 @@ module FSMCtrl (clk, reset, opcode, op, nsel, vsel, asel, bsel, loada, loadb, lo
                         reset_pc = 1'b0;
                         load_pc = 1'b0;
                         addr_sel = 1'b0;
-                        mem_cmd = `MEMNONE;
+                        mem_cmd = 3'b001;
                         load_ir = 1'b0;
                         /* unrelated signals */
                         vsel = 4'b0001;
@@ -335,7 +330,7 @@ module FSMCtrl (clk, reset, opcode, op, nsel, vsel, asel, bsel, loada, loadb, lo
                         reset_pc = 1'b0;
                         load_pc = 1'b0;
                         addr_sel = 1'b0;
-                        mem_cmd = `MEMNONE;
+                        mem_cmd = 3'b001;
                         load_ir = 1'b0;
                         /* unrelated signals */
                         vsel = 4'b0001;
@@ -353,7 +348,7 @@ module FSMCtrl (clk, reset, opcode, op, nsel, vsel, asel, bsel, loada, loadb, lo
                         reset_pc = 1'b0;
                         load_pc = 1'b0;
                         addr_sel = 1'b0;
-                        mem_cmd = `MEMNONE;
+                        mem_cmd = 3'b001;
                         load_ir = 1'b0;
                         /* unrelated signals */
                         asel = 1'b0;
@@ -369,7 +364,7 @@ module FSMCtrl (clk, reset, opcode, op, nsel, vsel, asel, bsel, loada, loadb, lo
                         reset_pc = 1'b0;
                         load_pc = 1'b0;
                         addr_sel = 1'b0;
-                        mem_cmd = `MEMNONE;
+                        mem_cmd = 3'b001;
                         load_ir = 1'b0;
                         vsel = op[1] ? 4'b0100 : 4'b0001; // select output if it's reg, input if it's imm
                         nsel = op[1] ? 3'b001 : 3'b010; // Rn if imm, Rd if some reg
