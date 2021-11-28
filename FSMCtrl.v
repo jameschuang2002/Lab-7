@@ -8,14 +8,14 @@ module vDFF(clk,D,Q);
     Q <= D;
 endmodule
 
-module FSMCtrl (clk, reset, opcode, op, nsel, vsel, asel, bsel, loada, loadb, loadc, write, loads, ALUop, reset_pc, load_pc, addr_sel, mem_cmd, load_ir, load_addr);
+module FSMCtrl (clk, shift, reset, opcode, op, nsel, vsel, asel, bsel, loada, loadb, loadc, write, loads, ALUop, reset_pc, load_pc, addr_sel, mem_cmd, load_ir, load_addr, sh);
     input reset, clk;
     input[2:0] opcode;
-    input[1:0] op;
+    input[1:0] op, shift;
     output reg asel, bsel, loada, loadb, loadc, write, loads, reset_pc, load_pc, addr_sel, load_ir, load_addr;
     output reg[2:0] nsel, mem_cmd;
     output reg[3:0] vsel;
-    output reg[1:0] ALUop;
+    output reg[1:0] ALUop, sh;
 
     /* state declaration */
     `define RST 5'b00000
@@ -35,14 +35,15 @@ module FSMCtrl (clk, reset, opcode, op, nsel, vsel, asel, bsel, loada, loadb, lo
     `define IF2 5'b01110
     `define UPDATEPC 5'b01111
     `define HALT 5'b10000
-    `define MEMADD 5'b10010
-    `define LDRWRITE 5'b10011
-    `define STRWRITE 5'b10100
-    `define MEMGETA 5'b10110
-    `define MEMGETB 5'b11001
-    `define PUTADDR 5'b10001
+    `define MEMADD 5'b10001
+    `define LDRWRITE 5'b10010
+    `define STRSHOW 5'b10011
+    `define MEMGETA 5'b10100
+    `define MEMGETB 5'b10101
+    `define PUTADDR 5'b10110
     `define LDRGET 5'b10111
     `define STRGET 5'b11000
+    `define STRWRITE 5'b11001
 
     wire[4:0] next_state_reset, current_state;
     reg[4:0] next_state;
@@ -98,10 +99,11 @@ module FSMCtrl (clk, reset, opcode, op, nsel, vsel, asel, bsel, loada, loadb, lo
             `MEMGETB: next_state = `MEMADD;
             `MEMADD: next_state = `PUTADDR;
             `PUTADDR: next_state = opcode[2] ? `STRGET : `LDRGET;
-            `STRGET: next_state = `STRWRITE;
+            `STRGET: next_state = `STRSHOW;
             `LDRGET: next_state = `LDRWRITE;
-            `STRWRITE: next_state = `IF1;
+            `STRSHOW: next_state = `STRWRITE;
             `LDRWRITE: next_state = `IF1;
+            `STRWRITE: next_state = `IF1;
 
             default: next_state = 5'bxxxxx;
         endcase
@@ -142,6 +144,7 @@ module FSMCtrl (clk, reset, opcode, op, nsel, vsel, asel, bsel, loada, loadb, lo
                         mem_cmd = 3'b010;
                         load_ir = 1'b0;
                         load_addr = 1'b0;
+                        sh = shift;
                         /* unrelated signals, declared to prevent latches */
                         asel = 1'b0; 
                         bsel = 1'b0;
@@ -161,6 +164,7 @@ module FSMCtrl (clk, reset, opcode, op, nsel, vsel, asel, bsel, loada, loadb, lo
                         mem_cmd = 3'b010;
                         load_ir = 1'b1;
                         load_addr = 1'b0;
+                        sh = shift;
                         /* unrelated signals, declared to prevent latches */
                         asel = 1'b0; 
                         bsel = 1'b0;
@@ -180,6 +184,7 @@ module FSMCtrl (clk, reset, opcode, op, nsel, vsel, asel, bsel, loada, loadb, lo
                             mem_cmd = 3'b001;
                             load_ir = 1'b0;
                             load_addr = 1'b0;
+                            sh = shift;
                             /* unrelated signals, declared to prevent latches */
                             asel = 1'b0; 
                             bsel = 1'b0;
@@ -198,6 +203,8 @@ module FSMCtrl (clk, reset, opcode, op, nsel, vsel, asel, bsel, loada, loadb, lo
                         addr_sel = 1'b1;
                         mem_cmd = 3'b001;
                         load_ir = 1'b0;
+                        load_addr = 1'b0;
+                        sh = shift;
                         asel = 1'b0; 
                         bsel = 1'b0;
                         vsel = 4'b0001;
@@ -219,6 +226,7 @@ module FSMCtrl (clk, reset, opcode, op, nsel, vsel, asel, bsel, loada, loadb, lo
                         mem_cmd = 3'b001;
                         load_ir = 1'b0;
                         load_addr = 1'b0;
+                        sh = shift;
                         /* unrelated signals */
                         asel = 1'b0;
                         bsel = 1'b0;
@@ -237,6 +245,7 @@ module FSMCtrl (clk, reset, opcode, op, nsel, vsel, asel, bsel, loada, loadb, lo
                         mem_cmd = 3'b001;
                         load_ir = 1'b0;
                         load_addr = 1'b0;
+                        sh = shift;
                         /* unrelated signals */
                         asel = 1'b0;
                         bsel = 1'b0;
@@ -254,6 +263,7 @@ module FSMCtrl (clk, reset, opcode, op, nsel, vsel, asel, bsel, loada, loadb, lo
                         mem_cmd = 3'b001;
                         load_ir = 1'b0;
                         load_addr = 1'b0;
+                        sh = shift;
                         /* unrelated signals */
                         asel = 1'b0;
                         bsel = 1'b0;
@@ -273,6 +283,7 @@ module FSMCtrl (clk, reset, opcode, op, nsel, vsel, asel, bsel, loada, loadb, lo
                         mem_cmd = 3'b001;
                         load_ir = 1'b0;
                         load_addr = 1'b0;
+                        sh = shift;
                         /* unrelated signals */
                         asel = 1'b0;
                         bsel = 1'b0;
@@ -294,6 +305,7 @@ module FSMCtrl (clk, reset, opcode, op, nsel, vsel, asel, bsel, loada, loadb, lo
                         mem_cmd = 3'b001;
                         load_ir = 1'b0;
                         load_addr = 1'b0;
+                        sh = shift;
                         /* unrelated signals */
                         vsel = 4'b0001;
                         nsel = 3'b001;
@@ -313,6 +325,7 @@ module FSMCtrl (clk, reset, opcode, op, nsel, vsel, asel, bsel, loada, loadb, lo
                         mem_cmd = 3'b001;
                         load_ir = 1'b0;
                         load_addr = 1'b0;
+                        sh = shift;
                         /* unrelated signals */
                         vsel = 4'b0001;
                         nsel = 3'b001;
@@ -332,6 +345,7 @@ module FSMCtrl (clk, reset, opcode, op, nsel, vsel, asel, bsel, loada, loadb, lo
                         mem_cmd = 3'b001;
                         load_ir = 1'b0;
                         load_addr = 1'b0;
+                        sh = shift;
                         /* unrelated signals */
                         vsel = 4'b0001;
                         nsel = 3'b001;
@@ -351,6 +365,7 @@ module FSMCtrl (clk, reset, opcode, op, nsel, vsel, asel, bsel, loada, loadb, lo
                         mem_cmd = 3'b001;
                         load_ir = 1'b0;
                         load_addr = 1'b0;
+                        sh = shift;
                         /* unrelated signals */
                         vsel = 4'b0001;
                         nsel = 3'b001;
@@ -370,6 +385,7 @@ module FSMCtrl (clk, reset, opcode, op, nsel, vsel, asel, bsel, loada, loadb, lo
                         mem_cmd = 3'b001;
                         load_ir = 1'b0;
                         load_addr = 1'b0;
+                        sh = shift;
                         /* unrelated signals */
                         vsel = 4'b0001;
                         nsel = 3'b001;
@@ -389,6 +405,7 @@ module FSMCtrl (clk, reset, opcode, op, nsel, vsel, asel, bsel, loada, loadb, lo
                         mem_cmd = 3'b001;
                         load_ir = 1'b0;
                         load_addr = 1'b0;
+                        sh = shift;
                         /* unrelated signals */
                         asel = 1'b0;
                         bsel = 1'b0;
@@ -408,6 +425,7 @@ module FSMCtrl (clk, reset, opcode, op, nsel, vsel, asel, bsel, loada, loadb, lo
                         load_addr = 1'b0;
                         vsel = op[1] ? 4'b0100 : 4'b0001; // select output if it's reg, input if it's imm
                         nsel = op[1] ? 3'b001 : 3'b010; // Rn if imm, Rd if some reg
+                        sh = shift;
                         /* unrelated signals */
                         asel = 1'b0;
                         bsel = 1'b0;
@@ -425,6 +443,7 @@ module FSMCtrl (clk, reset, opcode, op, nsel, vsel, asel, bsel, loada, loadb, lo
                         mem_cmd = 3'b001;
                         load_ir = 1'b0;
                         load_addr = 1'b0;
+                        sh = shift;
                         /* unrelated signals, declared to prevent latches */
                         asel = 1'b0; 
                         bsel = 1'b0;
@@ -444,6 +463,7 @@ module FSMCtrl (clk, reset, opcode, op, nsel, vsel, asel, bsel, loada, loadb, lo
                             mem_cmd = 3'b001;
                             load_ir = 1'b0;
                             load_addr = 1'b0;
+                            sh = 2'b00;
                             /* unrelated signals */
                             asel = 1'b0;
                             bsel = 1'b0;
@@ -458,10 +478,11 @@ module FSMCtrl (clk, reset, opcode, op, nsel, vsel, asel, bsel, loada, loadb, lo
                             write = 1'b0;
                             reset_pc = 1'b0;
                             load_pc = 1'b0;
-                            addr_sel = 1'b1;
+                            addr_sel = 1'b0;
                             mem_cmd = 3'b001;
                             load_ir = 1'b0;
                             load_addr = 1'b0;
+                            sh = 2'b00;
                             /* unrelated signals */
                             asel = 1'b0;
                             bsel = 1'b0;
@@ -479,10 +500,11 @@ module FSMCtrl (clk, reset, opcode, op, nsel, vsel, asel, bsel, loada, loadb, lo
                             ALUop = 2'b00;
                             reset_pc = 1'b0;
                             load_pc = 1'b0;
-                            addr_sel = 1'b1;
+                            addr_sel = 1'b0;
                             mem_cmd = 3'b001;
                             load_ir = 1'b0;
                             load_addr = 1'b0;
+                            sh = 2'b00;
                             /* unrelated signals */
                             vsel = 4'b0001;
                             nsel = 3'b001;
@@ -502,6 +524,7 @@ module FSMCtrl (clk, reset, opcode, op, nsel, vsel, asel, bsel, loada, loadb, lo
                             mem_cmd = 3'b001;
                             load_ir = 1'b0;
                             load_addr = 1'b1;
+                            sh = 2'b00;
                             /* unrelated signals */
                             vsel = 4'b0001;
                             nsel = 3'b001;
@@ -521,11 +544,71 @@ module FSMCtrl (clk, reset, opcode, op, nsel, vsel, asel, bsel, loada, loadb, lo
                             mem_cmd = 3'b010;
                             load_ir = 1'b0;
                             load_addr = 1'b1;
+                            sh = 2'b00;
                             /* unrelated signals */
                             vsel = 4'b0001;
                             nsel = 3'b001;
                         end
             `STRGET:    begin
+                            loada = 1'b0;
+                            loadb = 1'b1;
+                            loadc = 1'b0;
+                            loads = 1'b0;
+                            write = 1'b0;
+                            asel = 1'b0;
+                            bsel = 1'b0;
+                            ALUop = 2'b00;
+                            reset_pc = 1'b0;
+                            load_pc = 1'b0;
+                            addr_sel = 1'b0;
+                            mem_cmd = 3'b100;
+                            load_ir = 1'b0;
+                            load_addr = 1'b1;
+                            sh = 2'b00;
+                            /* unrelated signals */
+                            vsel = 4'b0001;
+                            nsel = 3'b010;
+                        end
+            `LDRWRITE:  begin
+                            loada = 1'b0;
+                            loadb = 1'b0;
+                            loadc = 1'b0;
+                            loads = 1'b0;
+                            write = 1'b1;
+                            asel = 1'b0;
+                            bsel = 1'b0;
+                            ALUop = 2'b00;
+                            reset_pc = 1'b0;
+                            load_pc = 1'b0;
+                            addr_sel = 1'b0;
+                            mem_cmd = 3'b010;
+                            load_ir = 1'b0;
+                            load_addr = 1'b0;
+                            sh = 2'b00;
+                            vsel = 4'b1000;
+                            nsel = 3'b010;
+                        end
+            `STRSHOW:   begin
+                            loada = 1'b0;
+                            loadb = 1'b0;
+                            loadc = 1'b1;
+                            loads = 1'b0;
+                            write = 1'b0;
+                            asel = 1'b1;
+                            bsel = 1'b0;
+                            ALUop = 2'b00;
+                            reset_pc = 1'b0;
+                            load_pc = 1'b0;
+                            addr_sel = 1'b0;
+                            mem_cmd = 3'b100;
+                            load_ir = 1'b0;
+                            load_addr = 1'b0;
+                            sh = 2'b00;
+                            /* unrelated signals */
+                            vsel = 4'b0001;
+                            nsel = 3'b001;
+                        end
+            `STRWRITE:   begin
                             loada = 1'b0;
                             loadb = 1'b0;
                             loadc = 1'b0;
@@ -539,44 +622,8 @@ module FSMCtrl (clk, reset, opcode, op, nsel, vsel, asel, bsel, loada, loadb, lo
                             addr_sel = 1'b0;
                             mem_cmd = 3'b100;
                             load_ir = 1'b0;
-                            load_addr = 1'b1;
-                            /* unrelated signals */
-                            vsel = 4'b0001;
-                            nsel = 3'b001;
-                        end
-            `LDRWRITE:  begin
-                            loada = 1'b0;
-                            loadb = 1'b0;
-                            loadc = 1'b0;
-                            loads = 1'b0;
-                            write = 1'b1;
-                            asel = 1'b0;
-                            bsel = 1'b0;
-                            ALUop = 2'b00;
-                            reset_pc = 1'b0;
-                            load_pc = 1'b0;
-                            addr_sel = 1'b1;
-                            mem_cmd = 3'b010;
-                            load_ir = 1'b0;
                             load_addr = 1'b0;
-                            vsel = 4'b1000;
-                            nsel = 3'b010;
-                        end
-            `STRWRITE:  begin
-                            loada = 1'b0;
-                            loadb = 1'b0;
-                            loadc = 1'b0;
-                            loads = 1'b0;
-                            write = 1'b0;
-                            asel = 1'b0;
-                            bsel = 1'b0;
-                            ALUop = 2'b00;
-                            reset_pc = 1'b0;
-                            load_pc = 1'b0;
-                            addr_sel = 1'b1;
-                            mem_cmd = 3'b100;
-                            load_ir = 1'b0;
-                            load_addr = 1'b0;
+                            sh = 2'b00;
                             /* unrelated signals */
                             vsel = 4'b0001;
                             nsel = 3'b001;

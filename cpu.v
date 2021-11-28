@@ -7,7 +7,7 @@ module cpu(clk, reset, in, out, N, V, Z, mem_cmd, mem_addr);
     output[8:0] mem_addr;
     wire[15:0] inst_reg, sximm5, sximm8, C;
     wire[2:0] readnum, writenum, opcode, nsel;
-    wire[1:0] ALUop, op, shift;
+    wire[1:0] ALUop, op, shift, sh;
     wire asel, bsel, loada, loadb, loadc, write, loads, reset_pc, load_pc, addr_sel, load_ir, load_addr;
     wire[8:0] PC, next_pc, data_address_reg;
     wire[3:0] vsel;
@@ -25,6 +25,7 @@ module cpu(clk, reset, in, out, N, V, Z, mem_cmd, mem_addr);
                     .reset(reset), 
                     .opcode(opcode), 
                     .op(op), 
+                    .shift(shift),
 
                     /* instruction decoder */
                     .nsel(nsel), 
@@ -46,7 +47,8 @@ module cpu(clk, reset, in, out, N, V, Z, mem_cmd, mem_addr);
                     .addr_sel(addr_sel), 
                     .mem_cmd(mem_cmd), 
                     .load_ir(load_ir),
-                    .load_addr(load_addr)
+                    .load_addr(load_addr),
+                    .sh(sh)
                 );
 
     assign next_pc = reset_pc ? {9{1'b0}} : PC + 1;
@@ -68,7 +70,7 @@ module cpu(clk, reset, in, out, N, V, Z, mem_cmd, mem_addr);
                     .readnum(readnum), 
                     .loada(loada), 
                     .loadb(loadb), 
-                    .shift(shift), 
+                    .shift(sh), 
                     .ALUop(ALUop), 
                     .Z_out(Z), 
                     .loadc(loadc), 
