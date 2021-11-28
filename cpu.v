@@ -1,6 +1,6 @@
-module cpu(clk, reset, in, out, N, V, Z, mem_cmd, mem_addr);
+module cpu(mdata, clk, reset, in, out, N, V, Z, mem_cmd, mem_addr);
     input clk, reset;
-    input[15:0] in;
+    input[15:0] in, mdata;
     output[15:0] out;
     output N, V, Z;
     output[2:0] mem_cmd;
@@ -8,8 +8,8 @@ module cpu(clk, reset, in, out, N, V, Z, mem_cmd, mem_addr);
     wire[15:0] inst_reg, sximm5, sximm8, mdata, C;
     wire[2:0] readnum, writenum, opcode, nsel;
     wire[1:0] ALUop, op, shift;
-    wire asel, bsel, loada, loadb, loadc, write, loads, reset_pc, load_pc, addr_sel, load_ir;
-    wire[8:0] pc, next_pc;
+    wire asel, bsel, loada, loadb, loadc, write, loads, reset_pc, load_pc, addr_sel, load_ir, load_addr;
+    wire[8:0] PC, next_pc, data_address_reg;
     wire[3:0] vsel;
 
     /* instruction register */
@@ -48,12 +48,13 @@ module cpu(clk, reset, in, out, N, V, Z, mem_cmd, mem_addr);
                     .load_ir(load_ir)
                 );
 
-    assign next_pc = reset_pc ? {9{1'b0}} : pc + 1;
-    regload #(9) PC(clk, load_pc, next_pc, pc);
-    assign mem_addr = addr_sel ? pc : {9{1'b0}};
+    assign next_pc = reset_pc ? {9{1'b0}} : PC + 1;
+    regload #(9) PRCT(clk, load_pc, next_pc, PC);
+    assign mem_addr = addr_sel ? PC : data_address_reg;
 
     /* datapath */
-    datapath DP(    
+    datapath DP(
+                    .mdata(mdata),
                     .sximm8(sximm8), 
                     .sximm5(sximm5), 
                     .datapath_out(out), 
@@ -74,5 +75,6 @@ module cpu(clk, reset, in, out, N, V, Z, mem_cmd, mem_addr);
                     .N_out(N), 
                     .V_out(V)
                 );
+    regload #(9) DATADDR(clk, load_addr, out[8:0], data_address_reg);
 endmodule
 
