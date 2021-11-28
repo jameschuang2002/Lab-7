@@ -25,20 +25,13 @@ module lab7_top_tb ();
 
     initial begin
         KEY[1] = 0; #10;
+        SW[7:0] = 8'd4;
         KEY[1] = 1; #700;
-        test(16'd5);
-
-        $display("R0: %b", lab7_top_tb.DUT.CPU.DP.REGFILE.R0);
-        $display("R1: %b", lab7_top_tb.DUT.CPU.DP.REGFILE.R1);
-        $display("R2: %b", lab7_top_tb.DUT.CPU.DP.REGFILE.R2);
-        $display("R3: %b", lab7_top_tb.DUT.CPU.DP.REGFILE.R3);
-        $display("R4: %b", lab7_top_tb.DUT.CPU.DP.REGFILE.R4);
-        $display("R5: %b", lab7_top_tb.DUT.CPU.DP.REGFILE.R5);
-        $display("R6: %b", lab7_top_tb.DUT.CPU.DP.REGFILE.R6);
-        $display("R7: %b", lab7_top_tb.DUT.CPU.DP.REGFILE.R7);
-        $display("mdata: %b", lab7_top_tb.DUT.CPU.DP.mdata);
-        $display("Instruction: %b", lab7_top_tb.DUT.CPU.inst_reg);
-        $display("Address : %b", lab7_top_tb.DUT.CPU.data_address_reg);
+        test(16'd8);
+        if(lab7_top_tb.DUT.CPU.DP.REGFILE.R3[7:0] !== LEDR[7:0]) begin
+            err = 1'b1;
+            $display("Incorrect LED. Expected: %b, Actual: %b", lab7_top_tb.DUT.CPU.DP.REGFILE.R3[7:0], LEDR[7:0]);
+        end
         if(err == 1'b0) begin 
             $display("Passed");
         end
