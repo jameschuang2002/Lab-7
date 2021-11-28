@@ -25,8 +25,15 @@ module lab7_top_tb ();
 
     initial begin
         KEY[1] = 0; #10;
-        KEY[1] = 1; #500;
-        test(5'd16);
+        KEY[1] = 1; #600;
+        test(16'd4);
+
+        $display("R0: %b", lab7_top_tb.DUT.CPU.DP.REGFILE.R0);
+        $display("R1: %b", lab7_top_tb.DUT.CPU.DP.REGFILE.R1);
+        $display("R2: %b", lab7_top_tb.DUT.CPU.DP.REGFILE.R2);
+        $display("mdata: %b", lab7_top_tb.DUT.CPU.DP.mdata);
+        $display("Instruction: %b", lab7_top_tb.DUT.CPU.inst_reg);
+        $display("Address : %b", lab7_top_tb.DUT.CPU.data_address_reg);
         if(err == 1'b0) begin 
             $display("Passed");
         end

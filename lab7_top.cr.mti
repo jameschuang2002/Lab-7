@@ -1,0 +1,61 @@
+C:/Users/user/Desktop/UBC/Year_2/Term_1/CPEN_211/Lab/Lab_7/Lab-7/FSMCtrl.v {1 {vlog -work work -stats=none C:/Users/user/Desktop/UBC/Year_2/Term_1/CPEN_211/Lab/Lab_7/Lab-7/FSMCtrl.v
+Model Technology ModelSim - Intel FPGA Edition vlog 10.5b Compiler 2016.10 Oct  5 2016
+-- Compiling module vDFF
+-- Compiling module FSMCtrl
+
+Top level modules:
+	FSMCtrl
+
+} {} {}} C:/Users/user/Desktop/UBC/Year_2/Term_1/CPEN_211/Lab/Lab_7/Lab-7/datapath.v {1 {vlog -work work -stats=none C:/Users/user/Desktop/UBC/Year_2/Term_1/CPEN_211/Lab/Lab_7/Lab-7/datapath.v
+Model Technology ModelSim - Intel FPGA Edition vlog 10.5b Compiler 2016.10 Oct  5 2016
+-- Compiling module datapath
+
+Top level modules:
+	datapath
+
+} {} {}} C:/Users/user/Desktop/UBC/Year_2/Term_1/CPEN_211/Lab/Lab_7/Lab-7/lab7_top.v {1 {vlog -work work -stats=none C:/Users/user/Desktop/UBC/Year_2/Term_1/CPEN_211/Lab/Lab_7/Lab-7/lab7_top.v
+Model Technology ModelSim - Intel FPGA Edition vlog 10.5b Compiler 2016.10 Oct  5 2016
+-- Compiling module RAM
+-- Compiling module lab7_top
+
+Top level modules:
+	lab7_top
+
+} {} {}} C:/Users/user/Desktop/UBC/Year_2/Term_1/CPEN_211/Lab/Lab_7/Lab-7/cpu.v {1 {vlog -work work -stats=none C:/Users/user/Desktop/UBC/Year_2/Term_1/CPEN_211/Lab/Lab_7/Lab-7/cpu.v
+Model Technology ModelSim - Intel FPGA Edition vlog 10.5b Compiler 2016.10 Oct  5 2016
+-- Compiling module cpu
+
+Top level modules:
+	cpu
+
+} {} {}} C:/Users/user/Desktop/UBC/Year_2/Term_1/CPEN_211/Lab/Lab_7/Lab-7/shifter.v {1 {vlog -work work -stats=none C:/Users/user/Desktop/UBC/Year_2/Term_1/CPEN_211/Lab/Lab_7/Lab-7/shifter.v
+Model Technology ModelSim - Intel FPGA Edition vlog 10.5b Compiler 2016.10 Oct  5 2016
+-- Compiling module shifter
+
+Top level modules:
+	shifter
+
+} {} {}} C:/Users/user/Desktop/UBC/Year_2/Term_1/CPEN_211/Lab/Lab_7/Lab-7/instruct_decoder.v {1 {vlog -work work -stats=none C:/Users/user/Desktop/UBC/Year_2/Term_1/CPEN_211/Lab/Lab_7/Lab-7/instruct_decoder.v
+Model Technology ModelSim - Intel FPGA Edition vlog 10.5b Compiler 2016.10 Oct  5 2016
+-- Compiling module instruct_decoder
+
+Top level modules:
+	instruct_decoder
+
+} {} {}} C:/Users/user/Desktop/UBC/Year_2/Term_1/CPEN_211/Lab/Lab_7/Lab-7/alu.v {1 {vlog -work work -stats=none C:/Users/user/Desktop/UBC/Year_2/Term_1/CPEN_211/Lab/Lab_7/Lab-7/alu.v
+Model Technology ModelSim - Intel FPGA Edition vlog 10.5b Compiler 2016.10 Oct  5 2016
+-- Compiling module ALU
+
+Top level modules:
+	ALU
+
+} {} {}} C:/Users/user/Desktop/UBC/Year_2/Term_1/CPEN_211/Lab/Lab_7/Lab-7/regfile.v {1 {vlog -work work -stats=none C:/Users/user/Desktop/UBC/Year_2/Term_1/CPEN_211/Lab/Lab_7/Lab-7/regfile.v
+Model Technology ModelSim - Intel FPGA Edition vlog 10.5b Compiler 2016.10 Oct  5 2016
+-- Compiling module decoder
+-- Compiling module regload
+-- Compiling module regfile
+
+Top level modules:
+	regfile
+
+} {} {}}

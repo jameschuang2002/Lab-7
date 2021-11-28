@@ -1,17 +1,17 @@
-module cpu(mdata, clk, reset, in, out, N, V, Z, mem_cmd, mem_addr);
+module cpu(clk, reset, in, out, N, V, Z, mem_cmd, mem_addr);
     input clk, reset;
-    input[15:0] in, mdata;
+    input[15:0] in;
     output[15:0] out;
     output N, V, Z;
     output[2:0] mem_cmd;
     output[8:0] mem_addr;
-    wire[15:0] inst_reg, sximm5, sximm8, mdata, C;
+    wire[15:0] inst_reg, sximm5, sximm8, C;
     wire[2:0] readnum, writenum, opcode, nsel;
     wire[1:0] ALUop, op, shift;
     wire asel, bsel, loada, loadb, loadc, write, loads, reset_pc, load_pc, addr_sel, load_ir, load_addr;
     wire[8:0] PC, next_pc, data_address_reg;
     wire[3:0] vsel;
-
+    wire[15:0] mdata = in;
     /* instruction register */
     regload #(16) LOAD(clk, load_ir, in, inst_reg);
 
@@ -45,7 +45,8 @@ module cpu(mdata, clk, reset, in, out, N, V, Z, mem_cmd, mem_addr);
                     .load_pc(load_pc), 
                     .addr_sel(addr_sel), 
                     .mem_cmd(mem_cmd), 
-                    .load_ir(load_ir)
+                    .load_ir(load_ir),
+                    .load_addr(load_addr)
                 );
 
     assign next_pc = reset_pc ? {9{1'b0}} : PC + 1;

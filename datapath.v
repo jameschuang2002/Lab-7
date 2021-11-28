@@ -13,9 +13,6 @@ module datapath(mdata, sximm8, sximm5, datapath_out, vsel, asel, bsel, clk, writ
     wire[7:0] PC;
     wire _Z, _N, _V;
 
-    assign mdata = {16{1'b0}};
-    assign PC = {8{1'b0}};
-
     /* modified input mux */
     always @(*) begin
         case(vsel)
