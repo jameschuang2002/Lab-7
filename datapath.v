@@ -1,6 +1,6 @@
-module datapath(sximm8, sximm5, datapath_out, vsel, asel, bsel, clk, writenum, write, readnum, loada, loadb, shift, ALUop, Z_out, loadc, loads, N_out, V_out);
+module datapath(mdata, sximm8, sximm5, datapath_out, vsel, asel, bsel, clk, writenum, write, readnum, loada, loadb, shift, ALUop, Z_out, loadc, loads, N_out, V_out);
 
-    input[15:0] sximm8, sximm5;
+    input[15:0] sximm8, sximm5, mdata;
     input asel, bsel, clk, write, loada, loadb, loadc, loads;
     input[3:0] vsel;
     input[2:0] writenum, readnum;
