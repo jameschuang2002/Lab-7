@@ -40,10 +40,11 @@ module lab7_top(KEY,SW,LEDR,HEX0,HEX1,HEX2,HEX3,HEX4,HEX5);
     wire[8:0] mem_addr;
     wire[15:0] din, dout, read_data, out;
     wire write, enable;
-    assign write = 1'b0;
     wire Z, N, V;
     wire[2:0] mem_cmd;
+
     cpu CPU (
+                .mdata(read_data),
                 .clk(~KEY[0]),
                 .reset(~KEY[1]),
                 .in(read_data),
@@ -58,7 +59,12 @@ module lab7_top(KEY,SW,LEDR,HEX0,HEX1,HEX2,HEX3,HEX4,HEX5);
     assign read_address = mem_addr[7:0];
     assign write_address = mem_addr[7:0];
 
+    assign din = out;
+
     assign enable = mem_cmd[1] & ~mem_addr[8];
+
+    assign write = enable & mem_cmd[2];
+
 
     RAM #(16, 8, "data.txt") MEM(   
                                     .clk(~KEY[0]), 
