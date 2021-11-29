@@ -43,6 +43,7 @@ module lab7_top(KEY,SW,LEDR,HEX0,HEX1,HEX2,HEX3,HEX4,HEX5);
     wire Z, N, V;
     wire[2:0] mem_cmd;
 
+    /* instantiation of the CPU module for this computer */
     cpu CPU (
                 .clk(~KEY[0]),
                 .reset(~KEY[1]),
@@ -55,16 +56,22 @@ module lab7_top(KEY,SW,LEDR,HEX0,HEX1,HEX2,HEX3,HEX4,HEX5);
                 .mem_addr(mem_addr)
             );
     
+    /* assign read and write address to mem_addr */
     assign read_address = mem_addr[7:0];
     assign write_address = mem_addr[7:0];
 
+    /* let memory input = out of datapath for address computation */
     assign din = out;
 
+    /* the memcmd is represented in one hot: 001 NONE, 010 READ, 100 WRITE */
+
+    /* check if command is read and the last bit on mem_addr */
     assign enable = mem_cmd[1] & ~mem_addr[8];
 
+    /* check if command is write and the last bit on mem_addr */
     assign write = ~mem_addr[8] & mem_cmd[2];
 
-
+    /* RAM module instantiation */
     RAM #(16, 8, "data.txt") MEM(   
                                     .clk(~KEY[0]), 
                                     .read_address(read_address), 
@@ -75,10 +82,11 @@ module lab7_top(KEY,SW,LEDR,HEX0,HEX1,HEX2,HEX3,HEX4,HEX5);
                                 );
 
 
+    /* we check if command is read and the address according to stage 3, if not, we go through the tri-state driver described in stage 1 */
     assign read_data = (mem_addr == 9'h140 & mem_cmd == 3'b010) ? {8'd0, SW[7:0]} : enable ? dout : {16{1'bz}};
 
     /* LED specifications */
-    assign load = mem_addr == 9'h100 && mem_cmd == 3'b100;
+    assign load = mem_addr == 9'h100 && mem_cmd == 3'b100; // condition for led to shine
     assign LEDR[7:0] = load ? out[7:0] : LEDR[7:0];
-    assign LEDR[9:8] = 2'b00;
+    assign LEDR[9:8] = 2'b00; // set the top two leds to 0
 endmodule

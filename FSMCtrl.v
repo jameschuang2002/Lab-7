@@ -18,30 +18,33 @@ module FSMCtrl (clk, shift, reset, opcode, op, nsel, vsel, asel, bsel, loada, lo
     output reg[1:0] ALUop, sh;
 
     /* state declaration */
-    `define RST 5'b00000
-    `define IF1 5'b00001
-    `define DEC  5'b00010
-    `define GETA 5'b00011
-    `define GETB 5'b00100
-    `define ADD  5'b00101
-    `define CMP  5'b00110
-    `define AND  5'b00111
-    `define MVN  5'b01000
-    `define WRITE 5'b01001
-    `define MGETB 5'b01010
-    `define MGETA 5'b01011
-    `define MWRITE 5'b01100
-    `define MSHOW 5'b01101
-    `define IF2 5'b01110
-    `define UPDATEPC 5'b01111
-    `define HALT 5'b10000
-    `define MEMADD 5'b10001
-    `define LDRWRITE 5'b10010
-    `define STRSHOW 5'b10011
+    `define RST 5'b00000 // reset 
+    `define IF1 5'b00001 // fetch instruction
+    `define DEC  5'b00010 // decode 
+    `define GETA 5'b00011 // get first value for alu 
+    `define GETB 5'b00100 // get second value for alu
+    `define ADD  5'b00101 // a+b
+    `define CMP  5'b00110 // a-b with relevant signals 
+    `define AND  5'b00111 // a & b
+    `define MVN  5'b01000 // ~b
+    `define WRITE 5'b01001 // write to register 
+
+    /* move instruction separated because some control signals are different */
+    `define MGETB 5'b01010 // get b for move instruction 
+    `define MGETA 5'b01011 // get a for move instruction 
+    `define MWRITE 5'b01100 // write for move instruction 
+    `define MSHOW 5'b01101 // show result for op 00
+    `define IF2 5'b01110 // load fetched instruction 
+    `define UPDATEPC 5'b01111 // update PC
+    `define HALT 5'b10000 // infinite loop 
+    /* memory states are combined for geta, getb, add, and put: shift operation are set to 0 for data safety */
+    `define MEMADD 5'b10001 
+    `define LDRWRITE 5'b10010 // write the value into the register 
+    `define STRSHOW 5'b10011 // show what is loaded to memory
     `define MEMGETA 5'b10100
     `define MEMGETB 5'b10101
-    `define PUTADDR 5'b10110
-    `define LDRGET 5'b10111
+    `define PUTADDR 5'b10110 // put the address in the address register 
+    `define LDRGET 5'b10111 // get the value to be loaded 
     `define STRGET 5'b11000
     `define STRWRITE 5'b11001
 
@@ -95,13 +98,13 @@ module FSMCtrl (clk, shift, reset, opcode, op, nsel, vsel, asel, bsel, loada, lo
             `HALT: next_state = `HALT;
 
         /* Memory related states */
-            `MEMGETA: next_state = `MEMGETB;
-            `MEMGETB: next_state = `MEMADD;
-            `MEMADD: next_state = `PUTADDR;
-            `PUTADDR: next_state = opcode[2] ? `STRGET : `LDRGET;
-            `STRGET: next_state = `STRSHOW;
-            `LDRGET: next_state = `LDRWRITE;
-            `STRSHOW: next_state = `STRWRITE;
+            `MEMGETA: next_state = `MEMGETB; 
+            `MEMGETB: next_state = `MEMADD; 
+            `MEMADD: next_state = `PUTADDR; 
+            `PUTADDR: next_state = opcode[2] ? `STRGET : `LDRGET; 
+            `STRGET: next_state = `STRSHOW; 
+            `LDRGET: next_state = `LDRWRITE; 
+            `STRSHOW: next_state = `STRWRITE; 
             `LDRWRITE: next_state = `IF1;
             `STRWRITE: next_state = `IF1;
 

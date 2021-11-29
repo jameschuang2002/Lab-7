@@ -50,9 +50,13 @@ module cpu(clk, reset, in, out, N, V, Z, mem_cmd, mem_addr);
                     .load_addr(load_addr),
                     .sh(sh)
                 );
-
+    /* PC multiplexer, add 1 if not reset, if reset back to 0 */
     assign next_pc = reset_pc ? {9{1'b0}} : PC + 1;
+
+    /* load for updating pc */
     regload #(9) PRCT(clk, load_pc, next_pc, PC);
+
+    /* memory address multiplexer: either PC or the value for ldr and str */
     assign mem_addr = addr_sel ? PC : data_address_reg;
 
     /* datapath */
@@ -78,6 +82,7 @@ module cpu(clk, reset, in, out, N, V, Z, mem_cmd, mem_addr);
                     .N_out(N), 
                     .V_out(V)
                 );
+    /* regload instantiation for address of data for ldr, str */
     regload #(9) DATADDR(clk, load_addr, out[8:0], data_address_reg);
 endmodule
 

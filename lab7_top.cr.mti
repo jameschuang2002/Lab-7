@@ -5,34 +5,12 @@ Model Technology ModelSim - Intel FPGA Edition vlog 10.5b Compiler 2016.10 Oct  
 Top level modules:
 	datapath
 
-} {} {}} C:/Users/user/Desktop/UBC/Year_2/Term_1/CPEN_211/Lab/Lab_7/Lab-7/FSMCtrl.v {1 {vlog -work work -stats=none C:/Users/user/Desktop/UBC/Year_2/Term_1/CPEN_211/Lab/Lab_7/Lab-7/FSMCtrl.v
-Model Technology ModelSim - Intel FPGA Edition vlog 10.5b Compiler 2016.10 Oct  5 2016
--- Compiling module vDFF
--- Compiling module FSMCtrl
-
-Top level modules:
-	FSMCtrl
-
 } {} {}} C:/Users/user/Desktop/UBC/Year_2/Term_1/CPEN_211/Lab/Lab_7/Lab-7/lab7_autograder_check.v {1 {vlog -work work -stats=none C:/Users/user/Desktop/UBC/Year_2/Term_1/CPEN_211/Lab/Lab_7/Lab-7/lab7_autograder_check.v
 Model Technology ModelSim - Intel FPGA Edition vlog 10.5b Compiler 2016.10 Oct  5 2016
 -- Compiling module lab7_check_tb
 
 Top level modules:
 	lab7_check_tb
-
-} {} {}} C:/Users/user/Desktop/UBC/Year_2/Term_1/CPEN_211/Lab/Lab_7/Lab-7/cpu.v {1 {vlog -work work -stats=none C:/Users/user/Desktop/UBC/Year_2/Term_1/CPEN_211/Lab/Lab_7/Lab-7/cpu.v
-Model Technology ModelSim - Intel FPGA Edition vlog 10.5b Compiler 2016.10 Oct  5 2016
--- Compiling module cpu
-
-Top level modules:
-	cpu
-
-} {} {}} C:/Users/user/Desktop/UBC/Year_2/Term_1/CPEN_211/Lab/Lab_7/Lab-7/lab7_top_tb.v {1 {vlog -work work -stats=none C:/Users/user/Desktop/UBC/Year_2/Term_1/CPEN_211/Lab/Lab_7/Lab-7/lab7_top_tb.v
-Model Technology ModelSim - Intel FPGA Edition vlog 10.5b Compiler 2016.10 Oct  5 2016
--- Compiling module lab7_top_tb
-
-Top level modules:
-	lab7_top_tb
 
 } {} {}} C:/Users/user/Desktop/UBC/Year_2/Term_1/CPEN_211/Lab/Lab_7/Lab-7/shifter.v {1 {vlog -work work -stats=none C:/Users/user/Desktop/UBC/Year_2/Term_1/CPEN_211/Lab/Lab_7/Lab-7/shifter.v
 Model Technology ModelSim - Intel FPGA Edition vlog 10.5b Compiler 2016.10 Oct  5 2016
