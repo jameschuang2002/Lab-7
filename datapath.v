@@ -28,10 +28,10 @@ module datapath(mdata, sximm8, sximm5, datapath_out, vsel, asel, bsel, clk, writ
     regfile REGFILE(datapath_in, writenum, write, readnum, clk, reg_data_out);
 
     /* load register to part A */
-    regload #(16) LA(clk, loada, reg_data_out, loada_out);
+    vDFFE #(16) LA(clk, loada, reg_data_out, loada_out);
 
     /* load register to part B */
-    regload #(16) LB(clk, loadb, reg_data_out, loadb_out);
+    vDFFE #(16) LB(clk, loadb, reg_data_out, loadb_out);
 
     /* the shifter in part B to perform shifting operations */
     shifter SHF(loadb_out, shift, shift_out);
@@ -46,12 +46,12 @@ module datapath(mdata, sximm8, sximm5, datapath_out, vsel, asel, bsel, clk, writ
     ALU AL(Ain, Bin, ALUop, alu_out, _Z, _N, _V);
 
     /* output load for the datapath_out */
-    regload #(16) LC(clk, loadc, alu_out, C);
+    vDFFE #(16) LC(clk, loadc, alu_out, C);
 
     /* output load for the status (Z), returns 1 if datapath_out is 0 */
-    regload #(1) STATUSZ(clk, loads, _Z, Z_out);
-    regload #(1) STATUSV(clk, loads, _V, V_out);
-    regload #(1) STATUSN(clk, loads, _N, N_out);
+    vDFFE #(1) STATUSZ(clk, loads, _Z, Z_out);
+    vDFFE #(1) STATUSV(clk, loads, _V, V_out);
+    vDFFE #(1) STATUSN(clk, loads, _N, N_out);
 
     assign datapath_out = C; // C is a temperorary storage wire for output 
 endmodule

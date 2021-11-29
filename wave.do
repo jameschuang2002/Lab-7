@@ -1,9 +1,5 @@
 onerror {resume}
 quietly WaveActivateNextPane {} 0
-add wave -noupdate /lab7_top_tb/DUT/LEDR
-add wave -noupdate /lab7_top_tb/DUT/load
-add wave -noupdate /lab7_top_tb/DUT/mem_addr
-add wave -noupdate /lab7_top_tb/DUT/mem_cmd
 add wave -noupdate /lab7_top_tb/DUT/KEY
 add wave -noupdate /lab7_top_tb/DUT/SW
 add wave -noupdate /lab7_top_tb/DUT/LEDR
@@ -22,16 +18,16 @@ add wave -noupdate /lab7_top_tb/DUT/read_data
 add wave -noupdate /lab7_top_tb/DUT/out
 add wave -noupdate /lab7_top_tb/DUT/write
 add wave -noupdate /lab7_top_tb/DUT/enable
+add wave -noupdate /lab7_top_tb/DUT/load
 add wave -noupdate /lab7_top_tb/DUT/Z
 add wave -noupdate /lab7_top_tb/DUT/N
 add wave -noupdate /lab7_top_tb/DUT/V
 add wave -noupdate /lab7_top_tb/DUT/mem_cmd
-add wave -noupdate /lab7_top_tb/DUT/load
 TreeUpdate [SetDefaultTree]
-WaveRestoreCursors {{Cursor 1} {641 ps} 0}
-quietly wave cursor active 1
-configure wave -namecolwidth 198
-configure wave -valuecolwidth 96
+WaveRestoreCursors {{Cursor 1} {0 ps} 0}
+quietly wave cursor active 0
+configure wave -namecolwidth 164
+configure wave -valuecolwidth 40
 configure wave -justifyvalue left
 configure wave -signalnamewidth 0
 configure wave -snapdistance 10
@@ -44,4 +40,4 @@ configure wave -griddelta 40
 configure wave -timeline 0
 configure wave -timelineunits ps
 update
-WaveRestoreZoom {438 ps} {725 ps}
+WaveRestoreZoom {0 ps} {1186 ps}

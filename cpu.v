@@ -13,7 +13,7 @@ module cpu(clk, reset, in, out, N, V, Z, mem_cmd, mem_addr);
     wire[3:0] vsel;
     wire[15:0] mdata = in;
     /* instruction register */
-    regload #(16) LOAD(clk, load_ir, in, inst_reg);
+    vDFFE #(16) LOAD(clk, load_ir, in, inst_reg);
 
     /* instruction decoder */
     instruct_decoder INST(inst_reg, nsel, opcode, op, readnum, writenum, shift, sximm8, sximm5);
@@ -54,7 +54,7 @@ module cpu(clk, reset, in, out, N, V, Z, mem_cmd, mem_addr);
     assign next_pc = reset_pc ? {9{1'b0}} : PC + 9'd1;
 
     /* load for updating pc */
-    regload #(9) PRCT(clk, load_pc, next_pc, PC);
+    vDFFE #(9) PRCT(clk, load_pc, next_pc, PC);
 
     /* memory address multiplexer: either PC or the value for ldr and str */
     assign mem_addr = addr_sel ? PC : data_address_reg;
@@ -82,7 +82,7 @@ module cpu(clk, reset, in, out, N, V, Z, mem_cmd, mem_addr);
                     .N_out(N), 
                     .V_out(V)
                 );
-    /* regload instantiation for address of data for ldr, str */
-    regload #(9) DATADDR(clk, load_addr, out[8:0], data_address_reg);
+    /* vDFFE instantiation for address of data for ldr, str */
+    vDFFE #(9) DATADDR(clk, load_addr, out[8:0], data_address_reg);
 endmodule
 
