@@ -17,7 +17,7 @@ module regload(clk, load, in, out);
     output reg [n-1:0] out; // output register for the output value
 
     /* designed based on state machine, update hold_data to in when load is true */
-    wire[15:0] hold_data = load ? in : out;
+    wire[n-1:0] hold_data = load ? in : out;
 
     /* set the output to the updated data when clk is on  */
     always @(posedge clk) begin

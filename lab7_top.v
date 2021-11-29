@@ -86,7 +86,7 @@ module lab7_top(KEY,SW,LEDR,HEX0,HEX1,HEX2,HEX3,HEX4,HEX5);
     assign read_data = (mem_addr == 9'h140 & mem_cmd == 3'b010) ? {8'd0, SW[7:0]} : enable ? dout : {16{1'bz}};
 
     /* LED specifications */
-    assign load = mem_addr == 9'h100 && mem_cmd == 3'b100; // condition for led to shine
+    assign load = mem_addr == 9'h100 & mem_cmd == 3'b100; // condition for led to shine
     assign LEDR[7:0] = load ? out[7:0] : LEDR[7:0];
     assign LEDR[9:8] = 2'b00; // set the top two leds to 0
 endmodule

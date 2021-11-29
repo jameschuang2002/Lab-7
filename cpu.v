@@ -51,7 +51,7 @@ module cpu(clk, reset, in, out, N, V, Z, mem_cmd, mem_addr);
                     .sh(sh)
                 );
     /* PC multiplexer, add 1 if not reset, if reset back to 0 */
-    assign next_pc = reset_pc ? {9{1'b0}} : PC + 1;
+    assign next_pc = reset_pc ? {9{1'b0}} : PC + 9'd1;
 
     /* load for updating pc */
     regload #(9) PRCT(clk, load_pc, next_pc, PC);
